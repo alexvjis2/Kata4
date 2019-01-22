@@ -1,5 +1,6 @@
 package main;
 
+import java.util.List;
 import model.Histogram;
 import model.Mail;
 import view.HistogramDisplay;
@@ -8,28 +9,33 @@ import view.MailListReader;
 
 public class Kata4 {
 
+    private final String filename;
+    private Histogram histogram;
+    private List<Mail> emails;
+
+    public Kata4(String filename) {
+        this.filename = filename;
+    }
+    
     public static void main(String[] args) {
-
-        Histogram<String> histogram = MailHistogramBuilder.build (
-                MailListReader.read("email.txt")
-        );
-
-        HistogramDisplay display = new HistogramDisplay("Histograma", histogram);
-
-        display.execute();
-        /*
-        
-        Histogram<String> histogram = new Histogram();
-        histogram.increment("ulpgc.es");
-        histogram.increment("gmail.es");
-        histogram.increment("ulpgc.es");
-        histogram.increment("protonmail.com");
-        histogram.increment("protonmail.com");
-        histogram.increment("protonmail.com");
-        histogram.increment("gmail.es");
-        histogram.increment("yahoo.es");
-        HistogramDisplay histo = new HistogramDisplay("HISTOGRAMA", histogram);
-        histo.execute();*/
+        new Kata4("emails.txt").execute();
     }
 
+    public void execute() {
+        input();
+        process();
+        output();
+    }
+    public void input() {
+        emails = MailListReader.read("email.txt");
+    }
+    
+    public void process() {
+        histogram = MailHistogramBuilder.build ( emails );
+    }
+    
+    public void output() {
+        HistogramDisplay display = new HistogramDisplay("Histograma", histogram);
+        display.execute();
+    }
 }
